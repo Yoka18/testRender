@@ -1,44 +1,40 @@
-const express = require('express')
-const app = express()
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
-const { v4: uuidV4 } = require('uuid')
-const path = require('path')
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
-app.use(express.static('public'))
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.render('index')
-})
+    res.render('index');
+});
 
-app.get('/room', (req, res) => {
-    res.redirect(`/room/${uuidV4()}`)
-})
+io.on('connection', (socket) => {
+    console.log('Bir kullanıcı bağlandı:', socket.id);
 
-app.get('/room/:room', (req, res) => {
-    res.render('room', { roomId: req.params.room })
-})
-
-io.on('connection', socket => {
-    console.log("Someone joined the server")
     socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId)
-        socket.to(roomId).emit('user-connected', userId)
+        socket.join(roomId);
+        socket.to(roomId).emit('user-connected', userId);
 
-        // Mesajları dinle ve ilgili odaya ilet
-        socket.on('message', (message) => {
-            io.to(roomId).emit('createMessage', message)
-        })
+        socket.on('message', message => {
+            io.to(roomId).emit('createMessage', message);
+        });
 
         socket.on('disconnect', () => {
-            socket.to(roomId).emit('user-disconnected', userId)
-            console.log("Someone left from the server")
-        })
-    })
-})
+            socket.to(roomId).emit('user-disconnected', userId);
+        });
 
-server.listen(3000, () => {
-    console.log("Server started on port 3000")
-})
+        socket.on('sending-signal', payload => {
+            io.to(payload.userToSignal).emit('user-joined', { signal: payload.signal, callerId: payload.callerId });
+        });
+
+        socket.on('returning-signal', payload => {
+            io.to(payload.callerId).emit('receiving-returned-signal', { signal: payload.signal, id: socket.id });
+        });
+    });
+});
+
+http.listen(3000, () => {
+    console.log('Sunucu 3000 portunda çalışıyor');
+});

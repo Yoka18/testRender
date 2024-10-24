@@ -1,12 +1,21 @@
-<!-- views/index.ejs -->
-
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-  <title>Video Chat App</title>
+    <meta charset="UTF-8">
+    <title>Video Sohbet Uygulaması</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Video Sohbet Uygulamasına Hoş Geldiniz</h1>
-  <a href="/room">Oda Oluştur</a>
+    <div id="video-chat-container">
+        <div id="video-grid"></div>
+    </div>
+    <div id="chat-container">
+        <div id="chat-window"></div>
+        <input id="chat-input" type="text" placeholder="Mesajınızı yazın...">
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
