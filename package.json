@@ -1,0 +1,22 @@
+{
+  "name": "webrtc2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "peer": "peerjs --port 3001",
+    "test": "node server.js & peerjs --port 3001"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "peer": "^1.0.2",
+    "peerjs": "^1.5.4",
+    "socket.io": "^4.8.0",
+    "uuid": "^10.0.0"
+  }
+}

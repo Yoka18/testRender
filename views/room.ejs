@@ -1,0 +1,25 @@
+<!-- views/room.ejs -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Oda <%= roomId %></title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script>
+    const ROOM_ID = "<%= roomId %>"
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="video-grid"></div>
+  <div id="chat-container">
+    <ul id="messages"></ul>
+    <form id="send-container">
+      <input id="message-input" type="text" autocomplete="off" placeholder="Mesajınızı yazın..." />
+      <button type="submit">Gönder</button>
+    </form>
+  </div>
+  <script src="/script.js"></script>
+</body>
+</html>
